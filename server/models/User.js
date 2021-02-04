@@ -21,10 +21,33 @@ const UserSchema = new Schema(
             type: String,
             required: true,
             trim: true
-        }
+        },
+
+        list: [
+            {
+            type: Schema.Types.ObjectId,
+            ref: 'list'
+            }
+        ]
+
+    },
+
+    {
+        toJSON: {
+            virtuals: true,
+        },
+        id: false
     }
 
 
 
 
-)
+);
+
+const User = model('User', userSchema);
+
+userSchema.virtual('listGuests').get(function() {
+    return this.friends.length;
+});
+
+module.exports = User;
